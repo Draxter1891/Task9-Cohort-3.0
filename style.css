@@ -2,13 +2,14 @@
   font-family: inter;
   src: url("/assets/font/inter.woff2");
 }
-[data-theme=light] {
+:root {
   --primary-bg: #f8f9fb;
   --elements-bg: #fff;
   --btn-bg: #000;
   --border-color: #ebebeb;
   --primary-text: #000;
   --text-color: #616161;
+  --text-dim: #949ba7;
   --tab-active-bg: #dbeafe;
   --tab-text-active-color: #1e40b6;
 }
@@ -371,9 +372,92 @@ main {
 }
 .right .right-btm .graph-interface .preferences {
   width: 30%;
-  height: 60%;
+  height: 45%;
   border: 1px solid #616161;
+  background: var(--elements-bg);
   border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
+}
+.right .right-btm .graph-interface .preferences h3 {
+  font-size: 1.2rem;
+  color: var(--primary-text);
+}
+.right .right-btm .graph-interface .preferences .pref-btm {
+  width: 100%;
+}
+.right .right-btm .graph-interface .preferences .pref-btm .mode {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.7rem 0.5rem;
+  border-bottom: 1px solid var(--text-dim);
+}
+.right .right-btm .graph-interface .preferences .pref-btm .mode h4 {
+  color: var(--text-color);
+  font-weight: 600;
+}
+.right .right-btm .graph-interface .preferences .pref-btm .mode .switch {
+  position: relative;
+  display: inline-block;
+  width: 3.5rem;
+  height: 2rem;
+}
+.right .right-btm .graph-interface .preferences .pref-btm .mode .switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.right .right-btm .graph-interface .preferences .pref-btm .mode .switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 1rem;
+  transition: 0.4s;
+}
+.right .right-btm .graph-interface .preferences .pref-btm .mode .switch .slider #ball {
+  position: absolute;
+  height: 1.5rem;
+  width: 1.5rem;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+.right .right-btm .graph-interface .preferences .pref-btm .mode .switch input:checked + .slider {
+  background-color: #2196f3;
+}
+.right .right-btm .graph-interface .preferences .pref-btm .mode .switch input:checked + .slider #ball {
+  background: #030c64;
+  transform: translate(100%);
+}
+.right .right-btm .graph-interface .preferences .pref-btm button {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.8rem 0;
+  border: none;
+  background: #fff5f5;
+  color: #991b1b;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform ease 0.3s;
+}
+.right .right-btm .graph-interface .preferences .pref-btm button:active {
+  transform: scale(1.04);
 }
 .right .right-btm .transactions {
   width: 65%;

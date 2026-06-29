@@ -19,7 +19,7 @@
     ></script>
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body data-theme="dark">
+  <body>
     <main>
       <!-- Form overlay -->
       <div class="form-overlay">
@@ -110,51 +110,46 @@
             <div class="card">
               <i class="ri-bank-fill"></i>
               <h3>Current Balance</h3>
-              <h2>$0.00</h2>
+              <h2 id="balance">$0.00</h2>
             </div>
             <div class="card">
               <i class="ri-arrow-right-up-line"></i>
               <h3>Total Income</h3>
-              <h2>$0.00</h2>
+              <h2 id="income">$0.00</h2>
             </div>
             <div class="card">
               <i class="ri-arrow-right-down-line"></i>
               <h3>Total Expense</h3>
-              <h2>$0.00</h2>
+              <h2 id="expense">$0.00</h2>
             </div>
             <div class="card">
               <i class="ri-stack-fill"></i>
               <h3>Total Transactions</h3>
-              <h2>$0.00</h2>
+              <h2 id="transactions">$0.00</h2>
             </div>
           </div>
           <div class="graph-interface">
             <div class="graph">
               <h2>Cash Flow Analysis</h2>
-              <!-- Legend -->
-              <div class="legend">
-                <div class="legend-item">
-                  <span class="color income"></span>Income
-                </div>
-                <div class="legend-item">
-                  <span class="color expense"></span>Expenses
-                </div>
-              </div>
-
-              <div class="chart-wrapper">
-                <!-- Y-Axis Labels -->
-                <div class="y-axis">
-                  <span>1.0</span><span>0.8</span><span>0.6</span
-                  ><span>0.4</span><span>0.2</span><span>0</span>
-                </div>
-
-                <!-- Container where JS will inject bars -->
-                <div class="chart-area" id="chartArea"></div>
-              </div>
-
-              <div class="footer-label">Income vs Expenses</div>
+              <canvas id="cashFlowChart"></canvas>
             </div>
-            <div class="preferences">Prefereces</div>
+            <div class="preferences">
+              <h3>Preferences</h3>
+              <div class="pref-btm">
+                <div class="mode">
+                  <h4>Dark Mode</h4>
+                  <label class="switch">
+                    <input type="checkbox" id="dark" />
+                    <span class="slider">
+                      <span id="ball"></span>
+                    </span>
+                  </label>
+                </div>
+                <button>
+                  <i class="ri-delete-bin-2-fill"></i>Reset All Data
+                </button>
+              </div>
+            </div>
           </div>
           <div class="transactions"></div>
         </div>
@@ -170,6 +165,7 @@
         </div>
       </section>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
