@@ -13,10 +13,70 @@
       href="https://ik.imagekit.io/udeluwj7a/Favicon-R/favicon.ico"
       type="image/x-icon"
     />
+    <script
+      src="https://kit.fontawesome.com/b46d8b31d8.js"
+      crossorigin="anonymous"
+    ></script>
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
+  <body data-theme="dark">
     <main>
+      <!-- Form overlay -->
+      <div class="form-overlay">
+        <form class="transaction-form">
+          <div class="modal-header">
+            <h2>Add Transaction</h2>
+            <button type="button" class="close-btn">x</button>
+          </div>
+
+          <div class="form-group">
+            <label for="type">Type</label>
+            <select id="type">
+              <option value="expense">Expense</option>
+              <option value="income">Income</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description</label>
+            <input
+              type="text"
+              id="description"
+              placeholder="e.g. Amazon, Salary, Coffee"
+            />
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <label for="amount">Amount</label>
+              <input type="number" id="amount" placeholder="0.00" />
+            </div>
+
+            <div class="form-group">
+              <label for="date">Date</label>
+              <input type="date" id="date" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category">
+              <option selected disabled>Select a category</option>
+              <option>Food & Dining</option>
+              <option>Shopping</option>
+              <option>Recharge & Bills</option>
+              <option>Petrol & Auto</option>
+              <option>Utilities</option>
+              <option>Salary</option>
+              <option>Entertainment</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <button type="submit" class="submit-btn">Add Transaction</button>
+        </form>
+      </div>
+
       <section class="left">
         <div class="top">
           <div class="logo-content">
@@ -33,7 +93,7 @@
             <div class="option"><i class="ri-settings-4-fill"></i>Settings</div>
           </div>
         </div>
-        <button>+ Add Transaction</button>
+        <button id="add-transation">+ Add Transaction</button>
       </section>
       <section class="right">
         <nav>
@@ -48,43 +108,58 @@
           </div>
           <div class="cards">
             <div class="card">
-              <i class="ri-logout-circle-r-line"></i>
+              <i class="ri-bank-fill"></i>
               <h3>Current Balance</h3>
               <h2>$0.00</h2>
             </div>
             <div class="card">
-              <i class="ri-logout-circle-r-line"></i>
-              <h3>Current Balance</h3>
+              <i class="ri-arrow-right-up-line"></i>
+              <h3>Total Income</h3>
               <h2>$0.00</h2>
             </div>
             <div class="card">
-              <i class="ri-logout-circle-r-line"></i>
-              <h3>Current Balance</h3>
+              <i class="ri-arrow-right-down-line"></i>
+              <h3>Total Expense</h3>
               <h2>$0.00</h2>
             </div>
             <div class="card">
-              <i class="ri-logout-circle-r-line"></i>
-              <h3>Current Balance</h3>
-              <h2>$0.00</h2>
-            </div>
-            <div class="card">
-              <i class="ri-logout-circle-r-line"></i>
-              <h3>Current Balance</h3>
+              <i class="ri-stack-fill"></i>
+              <h3>Total Transactions</h3>
               <h2>$0.00</h2>
             </div>
           </div>
           <div class="graph-interface">
             <div class="graph">
-                Cash Flow Analysis
+              <h2>Cash Flow Analysis</h2>
+              <!-- Legend -->
+              <div class="legend">
+                <div class="legend-item">
+                  <span class="color income"></span>Income
+                </div>
+                <div class="legend-item">
+                  <span class="color expense"></span>Expenses
+                </div>
+              </div>
+
+              <div class="chart-wrapper">
+                <!-- Y-Axis Labels -->
+                <div class="y-axis">
+                  <span>1.0</span><span>0.8</span><span>0.6</span
+                  ><span>0.4</span><span>0.2</span><span>0</span>
+                </div>
+
+                <!-- Container where JS will inject bars -->
+                <div class="chart-area" id="chartArea"></div>
+              </div>
+
+              <div class="footer-label">Income vs Expenses</div>
             </div>
-            <div class="preferences">
-                Prefereces
-            </div>
+            <div class="preferences">Prefereces</div>
           </div>
           <div class="transactions"></div>
         </div>
         <div class="right-settings">
-            <div class="heading">
+          <div class="heading">
             <h1>Financial Overview</h1>
             <p>Real-time tracking application</p>
           </div>

@@ -2,6 +2,29 @@
   font-family: inter;
   src: url("/assets/font/inter.woff2");
 }
+[data-theme=light] {
+  --primary-bg: #f8f9fb;
+  --elements-bg: #fff;
+  --btn-bg: #000;
+  --border-color: #ebebeb;
+  --primary-text: #000;
+  --text-color: #616161;
+  --tab-active-bg: #dbeafe;
+  --tab-text-active-color: #1e40b6;
+}
+
+[data-theme=dark] {
+  --primary-bg: #111827;
+  --elements-bg: #1f2937;
+  --btn-bg: #3b82f6;
+  --border-color: #374151;
+  --primary-text: #fff;
+  --text-color: #a7a7a7;
+  --text-dim: #949ba7;
+  --tab-active-bg: #374151;
+  --tab-text-active-color: #4c9cfa;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -18,8 +41,145 @@ body {
 main {
   height: 100%;
   width: 100%;
-  background: #f8f9fb;
+  background: var(--primary-bg);
   display: flex;
+  position: relative;
+}
+
+.form-overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  background-color: var(--overlay-bg);
+  backdrop-filter: blur(2px);
+  background: rgba(0, 0, 0, 0.3882352941);
+  display: none;
+  z-index: 999;
+}
+.form-overlay .transaction-form {
+  width: min(50%, 500px);
+  background: var(--elements-bg);
+  border-radius: 20px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.form-overlay .transaction-form .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.form-overlay .transaction-form .modal-header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-text);
+}
+.form-overlay .transaction-form .modal-header .close-btn {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 2rem;
+  color: var(--text-dim);
+  transition: 0.3s;
+}
+.form-overlay .transaction-form .modal-header .close-btn:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+.form-overlay .transaction-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.form-overlay .transaction-form .form-group label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+.form-overlay .transaction-form .form-group input,
+.form-overlay .transaction-form .form-group select {
+  width: 100%;
+  height: 52px;
+  padding: 0 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  background: var(--primary-bg);
+  color: var(--text-color);
+  font-size: 1rem;
+  outline: none;
+  transition: 0.25s ease;
+}
+.form-overlay .transaction-form .form-group input::-moz-placeholder, .form-overlay .transaction-form .form-group select::-moz-placeholder {
+  color: var(--text-dim);
+}
+.form-overlay .transaction-form .form-group input::placeholder,
+.form-overlay .transaction-form .form-group select::placeholder {
+  color: var(--text-dim);
+}
+.form-overlay .transaction-form .form-group input:focus,
+.form-overlay .transaction-form .form-group select:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+}
+.form-overlay .transaction-form .form-group textarea {
+  resize: none;
+  min-height: 110px;
+  padding: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  outline: none;
+  transition: 0.25s;
+}
+.form-overlay .transaction-form .form-group textarea:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+}
+.form-overlay .transaction-form .row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+.form-overlay .transaction-form .submit-btn {
+  margin-top: 0.5rem;
+  height: 56px;
+  border: none;
+  border-radius: 14px;
+  background: #4f46e5;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+.form-overlay .transaction-form .submit-btn:hover {
+  background: #4338ca;
+  transform: translateY(-2px);
+}
+.form-overlay .transaction-form .submit-btn:active {
+  transform: translateY(0);
+}
+@media (max-width: 600px) {
+  .form-overlay .transaction-form {
+    padding: 1.5rem;
+  }
+  .form-overlay .transaction-form .modal-header h2 {
+    font-size: 1.6rem;
+  }
+  .form-overlay .transaction-form .row {
+    grid-template-columns: 1fr;
+  }
+  .form-overlay .transaction-form .submit-btn {
+    height: 52px;
+  }
 }
 
 .left {
@@ -30,11 +190,11 @@ main {
   align-items: center;
   justify-content: space-between;
   padding: 1.5rem;
-  background: #ffffff;
+  background: var(--elements-bg);
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
-  border-right: 1px solid #ebebeb;
+  border-right: 1px solid var(--border-color);
 }
 .left .top {
   width: 100%;
@@ -50,14 +210,16 @@ main {
 }
 .left .top .logo-content i {
   font-size: 1.7rem;
+  color: var(--primary-text);
 }
 .left .top .logo-content h2 {
   font-size: 1.2rem;
+  color: var(--primary-text);
 }
 .left .top .logo-content h3 {
   font-size: 0.8rem;
   font-weight: 300;
-  color: #616161;
+  color: var(--text-dim);
 }
 .left .top .options {
   width: 100%;
@@ -74,16 +236,17 @@ main {
   align-items: center;
   justify-content: start;
   font-size: 1rem;
-  color: #616161;
+  font-weight: 500;
+  color: var(--tab-text-active-color);
   cursor: pointer;
 }
 .left .top .options .option:nth-child(1) {
-  background: #dbeafe;
+  background: var(--tab-active-bg);
 }
 .left button {
   padding: 1rem 0;
   width: 100%;
-  background: #000;
+  background: var(--btn-bg);
   color: #fff;
   font-weight: 600;
   border: none;
@@ -106,21 +269,23 @@ main {
   justify-content: end;
   gap: 1rem;
   align-items: center;
-  background: #fff;
+  background: var(--elements-bg);
   padding: 1rem;
-  border-bottom: 1px solid #ebebeb;
+  border-bottom: 1px solid var(--border-color);
 }
 .right nav .vertical-line {
   width: 2px;
   height: 18px;
-  background: #616161;
+  background: var(--text-color);
 }
 .right nav p {
   font-size: 1rem;
+  color: var(--primary-text);
 }
 .right nav button {
   padding: 0.7rem 2rem;
-  border: 1px solid black;
+  border: 1px solid var(--btn-bg);
+  color: var(--primary-text);
   background: transparent;
   border-radius: 0.5rem;
   font-size: 0.8rem;
@@ -128,16 +293,15 @@ main {
   cursor: pointer;
 }
 .right .right-btm {
-  display: none;
   padding: 2rem;
 }
 .right .right-btm .heading h1 {
   font-size: 1.5rem;
-  color: #000;
+  color: var(--primary-text);
 }
 .right .right-btm .heading p {
   font-size: 0.8rem;
-  color: #616161;
+  color: var(--text-color);
 }
 .right .right-btm .cards {
   margin-top: 2rem;
@@ -146,29 +310,41 @@ main {
 }
 .right .right-btm .cards .card {
   width: 25%;
-  border: 1px solid #ebebeb;
+  border: 1px solid var(--border-color);
   border-radius: 0.5rem;
   padding: 1.5rem;
-  background: #fff;
+  background: var(--elements-bg);
 }
 .right .right-btm .cards .card i {
   display: inline-block;
   font-size: 1.2rem;
-  color: #1E40AF;
-  padding: 0.5rem;
+  color: #1e40af;
+  padding: 0.5rem 0.6rem;
   border-radius: 0.5rem;
-  background-color: #DBEAFE;
+  background-color: #dbeafe;
   margin-bottom: 0.5rem;
+  font-weight: 600;
 }
 .right .right-btm .cards .card h3 {
   font-size: 0.9rem;
   font-weight: 400;
-  color: #616161;
+  color: var(--text-color);
   margin-bottom: 0.2rem;
+}
+.right .right-btm .cards .card h2 {
+  color: var(--primary-text);
+}
+.right .right-btm .cards .card:nth-child(2) i {
+  background: #dcfce7;
+  color: #166534;
+}
+.right .right-btm .cards .card:nth-child(3) i {
+  background: #fee2e2;
+  color: #991b61;
 }
 .right .right-btm .graph-interface {
   width: 100%;
-  height: 20rem;
+  height: 25rem;
   margin: 1.5rem 0;
   display: flex;
   justify-content: space-between;
@@ -176,8 +352,22 @@ main {
 .right .right-btm .graph-interface .graph {
   width: 65%;
   height: 100%;
-  border: 1px solid #616161;
+  border: 1px solid var(--border-color);
+  background: var(--elements-bg);
   border-radius: 0.5rem;
+  color: var(--primary-text);
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: space-between;
+}
+.right .right-btm .graph-interface .graph canvas {
+  width: 100%;
+  height: 85%;
+  border-radius: 0.5rem;
+  background-color: var(--primary-bg);
 }
 .right .right-btm .graph-interface .preferences {
   width: 30%;
