@@ -12,6 +12,7 @@
   --text-color: #616161;
   --text-dim: #949ba7;
   --tab-active-bg: #dbeafe;
+  --tab-hover-bg: #dbeafec7;
   --tab-text-active-color: #1e40b6;
 }
 
@@ -24,6 +25,7 @@
   --text-color: #a7a7a7;
   --text-dim: #949ba7;
   --tab-active-bg: #374151;
+  --tab-hover-bg: #2a3342;
   --tab-text-active-color: #4c9cfa;
 }
 
@@ -251,9 +253,13 @@ main {
         font-weight: 500;
         color: var(--tab-text-active-color);
         cursor: pointer;
-        &:nth-child(1) {
-          background: var(--tab-active-bg);
+        transition: background-color ease 0.2s;
+        &:hover{
+          background-color: var(--tab-hover-bg);
         }
+      }
+      .activeOption {
+        background: var(--tab-active-bg);
       }
     }
   }
@@ -394,7 +400,7 @@ main {
       .preferences {
         width: 30%;
         height: 45%;
-        border: 1px solid #616161;
+        border: 1px solid var(--border-color);
         background: var(--elements-bg);
         border-radius: 0.5rem;
         display: flex;
@@ -463,6 +469,7 @@ main {
             }
           }
           button {
+            position: relative;
             width: 100%;
             margin-top: 1rem;
             padding: 0.8rem 0;
@@ -477,10 +484,31 @@ main {
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: transform ease 0.3s;
+            transition: all ease 0.3s;
+            z-index: 0;
+            overflow: hidden;
+            &::before{
+              content: "";
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              transform: translate(-50%,-50%) scale(0);
+              width: 10px;
+              aspect-ratio: 1/1;
+              border-radius: 50%;
+              background-color: rgb(160, 57, 57);
+              z-index: -1;
+              transition: transform ease 0.4s;
+            }
             &:active {
               transform: scale(1.04);
             }
+          }
+          button:hover::before{
+              transform: translate(-50%, -50%) scale(30);
+            }
+          button:hover{
+            color: white;
           }
         }
       }
@@ -491,6 +519,22 @@ main {
       height: 10rem;
       border: 1px solid black;
       border-radius: 0.5rem;
+    }
+  }
+
+  .right-settings {
+    width: 100%;
+    padding: 2rem;
+    display: none;
+    .heading{
+      h1 {
+        font-size: 1.5rem;
+        color: var(--primary-text);
+      }
+      p {
+        font-size: 0.8rem;
+        color: var(--text-color);
+      } 
     }
   }
 }

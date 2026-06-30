@@ -57,7 +57,6 @@ let users = JSON.parse(localStorage.getItem("users")) || [
   },
 ];
 
-
 const currentUser = users[0];
 
 let chart = null;
@@ -74,6 +73,10 @@ const balanceCard = document.querySelector("#balance");
 const incomeCard = document.querySelector("#income");
 const expenseCard = document.querySelector("#expense");
 const transactionsCard = document.querySelector("#transactions");
+const dashboard = document.querySelector("#dashboard")
+const settings = document.querySelector("#settings")
+const rightbtm = document.querySelector(".right-btm")
+const rightsettings = document.querySelector(".right-settings")
 
 //form data
 const type = document.querySelector("#type");
@@ -89,10 +92,9 @@ darkMode.addEventListener("change", (e) => {
 
   currentUser.darkMode = isDarkMode;
   applyTheme(isDarkMode);
-  saveUsers()
-  console.log(getUser())
+  saveUsers();
+  console.log(getUser());
 });
-
 
 addTransaction.addEventListener("click", () => {
   formOverlay.style.display = "block";
@@ -126,13 +128,29 @@ form.addEventListener("submit", (e) => {
   currentUser.transactions.push(transaction);
 
   saveUsers();
-  getTotals(users);
   renderUI();
   form.reset();
   formOverlay.style.display = "none";
 });
 
+dashboard.addEventListener("click",()=>{
+    rightsettings.style.display = "none";
+    rightbtm.style.display = "block"
+    dashboard.classList.add("activeOption")
+    settings.classList.remove("activeOption")
+})
+settings.addEventListener("click",()=>{
+    rightbtm.style.display = "none";
+    rightsettings.style.display = "block"
+    settings.classList.add("activeOption")
+    dashboard.classList.remove("activeOption")
+})
+
+
+
+//Utility functions
 function renderUI() {
+  console.log("fetching user");
   let loggedinUser = getUser();
 
   applyTheme(loggedinUser.darkMode);
@@ -152,15 +170,14 @@ renderUI();
 
 
 
-//Utility functions
 
 function applyTheme(isDarkMode) {
   if (isDarkMode) {
     document.body.setAttribute("data-theme", "dark");
-    darkMode.checked = true
-} else {
+    darkMode.checked = true;
+  } else {
     document.body.removeAttribute("data-theme");
-    darkMode.checked = false
+    darkMode.checked = false;
   }
 }
 
@@ -168,6 +185,8 @@ function getTotals(user) {
   let totalExpense = 0,
     totalIncome = 0;
   //   let loggedinUser = users.find((user) => user.id === currentUser.id);
+  console.log(user);
+  console.log("Inside getTotal user");
   let money = user.transactions;
   money.forEach((element) => {
     if (element.type === "expense") {
@@ -180,7 +199,10 @@ function getTotals(user) {
 }
 
 function renderChart(totalIncome, totalExpense) {
-  new Chart(chartCanvas, {
+  if (chart) {
+    chart.destroy();
+  }
+  chart = new Chart(chartCanvas, {
     type: "bar",
 
     data: {

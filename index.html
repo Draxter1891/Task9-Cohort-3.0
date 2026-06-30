@@ -87,10 +87,12 @@
             </div>
           </div>
           <div class="options">
-            <div class="option">
+            <div class="option activeOption" id="dashboard">
               <i class="ri-dashboard-horizontal-line"></i> Dashboard
             </div>
-            <div class="option"><i class="ri-settings-4-fill"></i>Settings</div>
+            <div class="option" id="settings">
+              <i class="ri-settings-4-fill"></i>Settings
+            </div>
           </div>
         </div>
         <button id="add-transation">+ Add Transaction</button>
@@ -123,7 +125,7 @@
               <h2 id="expense">$0.00</h2>
             </div>
             <div class="card">
-              <i class="ri-stack-fill"></i>
+              <i class="ri-swap-line"></i>
               <h3>Total Transactions</h3>
               <h2 id="transactions">$0.00</h2>
             </div>
@@ -155,12 +157,27 @@
         </div>
         <div class="right-settings">
           <div class="heading">
-            <h1>Financial Overview</h1>
-            <p>Real-time tracking application</p>
+            <h1>Settings</h1>
+            <p>Manage your account profile and app formatting.</p>
           </div>
 
           <form action="">
             <h2>Profile Details</h2>
+            <div class="name">
+              <label for="full-name">Full Name</label>
+              <input type="text" placeholder="Enter username..." />
+            </div>
+            <div class="currency">
+              <label for="primary-currency">Primary Currency</label>
+              <select name="currency" id="currency">
+                <option value="USD">USD ($)</option>
+                <option value="EUR">EUR (€)</option>
+                <option value="GBP">GBP (£)</option>
+                <option value="INR">INR (₹)</option>
+                <option value="JPY">JPY (¥)</option>
+              </select>
+              <input type="text" placeholder="Enter username..." />
+            </div>
           </form>
         </div>
       </section>

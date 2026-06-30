@@ -11,6 +11,7 @@
   --text-color: #616161;
   --text-dim: #949ba7;
   --tab-active-bg: #dbeafe;
+  --tab-hover-bg: #dbeafec7;
   --tab-text-active-color: #1e40b6;
 }
 
@@ -23,6 +24,7 @@
   --text-color: #a7a7a7;
   --text-dim: #949ba7;
   --tab-active-bg: #374151;
+  --tab-hover-bg: #2a3342;
   --tab-text-active-color: #4c9cfa;
 }
 
@@ -240,8 +242,12 @@ main {
   font-weight: 500;
   color: var(--tab-text-active-color);
   cursor: pointer;
+  transition: background-color ease 0.2s;
 }
-.left .top .options .option:nth-child(1) {
+.left .top .options .option:hover {
+  background-color: var(--tab-hover-bg);
+}
+.left .top .options .activeOption {
   background: var(--tab-active-bg);
 }
 .left button {
@@ -373,7 +379,7 @@ main {
 .right .right-btm .graph-interface .preferences {
   width: 30%;
   height: 45%;
-  border: 1px solid #616161;
+  border: 1px solid var(--border-color);
   background: var(--elements-bg);
   border-radius: 0.5rem;
   display: flex;
@@ -440,6 +446,7 @@ main {
   transform: translate(100%);
 }
 .right .right-btm .graph-interface .preferences .pref-btm button {
+  position: relative;
   width: 100%;
   margin-top: 1rem;
   padding: 0.8rem 0;
@@ -454,14 +461,48 @@ main {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform ease 0.3s;
+  transition: all ease 0.3s;
+  z-index: 0;
+  overflow: hidden;
+}
+.right .right-btm .graph-interface .preferences .pref-btm button::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 10px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background-color: rgb(160, 57, 57);
+  z-index: -1;
+  transition: transform ease 0.4s;
 }
 .right .right-btm .graph-interface .preferences .pref-btm button:active {
   transform: scale(1.04);
+}
+.right .right-btm .graph-interface .preferences .pref-btm button:hover::before {
+  transform: translate(-50%, -50%) scale(30);
+}
+.right .right-btm .graph-interface .preferences .pref-btm button:hover {
+  color: white;
 }
 .right .right-btm .transactions {
   width: 65%;
   height: 10rem;
   border: 1px solid black;
   border-radius: 0.5rem;
+}
+.right .right-settings {
+  width: 100%;
+  padding: 2rem;
+  display: none;
+}
+.right .right-settings .heading h1 {
+  font-size: 1.5rem;
+  color: var(--primary-text);
+}
+.right .right-settings .heading p {
+  font-size: 0.8rem;
+  color: var(--text-color);
 }/*# sourceMappingURL=style.css.map */
