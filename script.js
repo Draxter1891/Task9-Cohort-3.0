@@ -19,7 +19,7 @@ let users = JSON.parse(localStorage.getItem("users")) || [
         date: "2026-06-30",
       },
       {
-        id: 101,
+        id: 102,
         type: "income",
         description: "salary",
         amount: 18000,
@@ -27,7 +27,7 @@ let users = JSON.parse(localStorage.getItem("users")) || [
         date: "2026-06-30",
       },
       {
-        id: 101,
+        id: 103,
         type: "income",
         description: "salary",
         amount: 18000,
@@ -41,7 +41,7 @@ let users = JSON.parse(localStorage.getItem("users")) || [
     name: "Radhika",
     email: "radhika@gmail.com",
     password: "123456",
-    currency: "INR",
+    currency: "USD",
     darkMode: false,
 
     transactions: [
@@ -73,13 +73,14 @@ const balanceCard = document.querySelector("#balance");
 const incomeCard = document.querySelector("#income");
 const expenseCard = document.querySelector("#expense");
 const transactionsCard = document.querySelector("#transactions");
-const dashboard = document.querySelector("#dashboard")
-const settings = document.querySelector("#settings")
-const rightbtm = document.querySelector(".right-btm")
-const rightsettings = document.querySelector(".right-settings")
-const deleteTransactionsBtn = document.querySelector("#delete-all-transactions")
-
-
+const currencyType = document.querySelectorAll(".currency-type");
+const dashboard = document.querySelector("#dashboard");
+const settings = document.querySelector("#settings");
+const rightbtm = document.querySelector(".right-btm");
+const rightsettings = document.querySelector(".right-settings");
+const deleteTransactionsBtn = document.querySelector(
+  "#delete-all-transactions",
+);
 
 //form data
 const type = document.querySelector("#type");
@@ -112,10 +113,11 @@ form.addEventListener("submit", (e) => {
   if (
     description.value.trim() === "" ||
     !amount.value ||
+    Number(amount.value) <= 0 ||
     date.value === "" ||
     category.value === ""
   ) {
-    alert("please fill all the fields");
+    alert("Please fill all the fields appropriately");
     return;
   }
   const transaction = {
@@ -136,46 +138,62 @@ form.addEventListener("submit", (e) => {
   formOverlay.style.display = "none";
 });
 
-dashboard.addEventListener("click",()=>{
-    rightsettings.style.display = "none";
-    rightbtm.style.display = "block"
-    dashboard.classList.add("activeOption")
-    settings.classList.remove("activeOption")
-})
-settings.addEventListener("click",()=>{
-    rightbtm.style.display = "none";
-    rightsettings.style.display = "block"
-    settings.classList.add("activeOption")
-    dashboard.classList.remove("activeOption")
-})
+dashboard.addEventListener("click", () => {
+  showPage("dashboard");
+});
+settings.addEventListener("click", () => {
+  showPage("settings");
+});
 
-deleteTransactionsBtn.addEventListener("click",()=>{
+deleteTransactionsBtn.addEventListener("click", () => {
   deleteAllTransactions();
-})
-
+});
 
 //Utility functions
 function renderUI() {
   // console.log("fetching user");
-  let loggedinUser = getUser();
+  let loggedinUser = currentUser;
 
   applyTheme(loggedinUser.darkMode);
 
   userName.textContent = `${loggedinUser.name}`;
 
   let totals = getTotals(loggedinUser);
-  balanceCard.textContent = totals[0] - totals[1];
-  incomeCard.textContent = totals[0];
-  expenseCard.textContent = totals[1];
+  balanceCard.textContent = totals.income - totals.expense;
+  incomeCard.textContent = totals.income;
+  expenseCard.textContent = totals.expense;
   transactionsCard.textContent = loggedinUser.transactions.length;
 
-  renderChart(totals[0], totals[1]);
+  const currencySymbols = {
+    INR: "₹",
+    USD: "$",
+    EUR: "€",
+    GBP: "£",
+    JPY: "¥",
+  };
+
+  currencyType.forEach(
+    (elem) => (elem.textContent = currencySymbols[loggedinUser.currency]),
+  );
+  // console.log(loggedinUser)
+  renderChart(totals.income, totals.expense);
 }
 
 renderUI();
 
-
-
+function showPage(page) {
+  if (page === "dashboard") {
+    rightsettings.style.display = "none";
+    rightbtm.style.display = "block";
+    dashboard.classList.add("activeOption");
+    settings.classList.remove("activeOption");
+  } else {
+    rightbtm.style.display = "none";
+    rightsettings.style.display = "block";
+    settings.classList.add("activeOption");
+    dashboard.classList.remove("activeOption");
+  }
+}
 
 function applyTheme(isDarkMode) {
   if (isDarkMode) {
@@ -201,7 +219,10 @@ function getTotals(user) {
       totalIncome += element.amount;
     }
   });
-  return [totalIncome, totalExpense];
+  return {
+    income: totalIncome,
+    expense: totalExpense,
+  };
 }
 
 function renderChart(totalIncome, totalExpense) {
@@ -228,6 +249,9 @@ function renderChart(totalIncome, totalExpense) {
         },
       ],
     },
+    options: {
+      responsive: true,
+    },
   });
 }
 
@@ -236,15 +260,17 @@ function saveUsers() {
 }
 function getUser() {
   let allUsers = JSON.parse(localStorage.getItem("users"));
-  let loggedinUser = allUsers.find((user) => user.id === currentUser.id) || currentUser;
+  let loggedinUser =
+    allUsers.find((user) => user.id === currentUser.id) || currentUser;
   return loggedinUser;
 }
 
-function deleteAllTransactions(){
+function deleteAllTransactions() {
   // console.log("delete transactions button clicked")
   // console.log(currentUser)
-  currentUser.transactions = [];
+  if (confirm("Are you sure to delete all transactions?")) {
+    currentUser.transactions = [];
+  }
   saveUsers();
   renderUI();
 }
-
