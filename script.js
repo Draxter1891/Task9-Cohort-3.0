@@ -96,7 +96,7 @@ darkMode.addEventListener("change", (e) => {
   currentUser.darkMode = isDarkMode;
   applyTheme(isDarkMode);
   saveUsers();
-  console.log(getUser());
+  // console.log(getUser());
 });
 
 addTransaction.addEventListener("click", () => {
