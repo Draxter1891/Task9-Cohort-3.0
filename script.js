@@ -81,7 +81,7 @@ const rightsettings = document.querySelector(".right-settings");
 const deleteTransactionsBtn = document.querySelector(
   "#delete-all-transactions",
 );
-
+const tBody = document.querySelector("#transactions-list");
 //form data
 const type = document.querySelector("#type");
 const description = document.querySelector("#description");
@@ -177,6 +177,7 @@ function renderUI() {
   );
   // console.log(loggedinUser)
   renderChart(totals.income, totals.expense);
+  renderTransactions();
 }
 
 renderUI();
@@ -271,6 +272,50 @@ function deleteAllTransactions() {
   if (confirm("Are you sure to delete all transactions?")) {
     currentUser.transactions = [];
   }
+  saveUsers();
+  renderUI();
+}
+
+function renderTransactions() {
+  console.log(currentUser);
+  tBody.innerHTML = "";
+  currentUser.transactions.forEach((elem) => {
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td>${elem.date}</td>
+
+      <td class="description">${elem.description}</td>
+
+      <td class="category">
+        <span class="category-tag">${elem.category}</span>
+      </td>
+
+      <td class="income" style="color:${elem.type === "income" ? "#16A34A" : "#E80000"}">${elem.type === "income" ? "+" : "-"} ${elem.amount}</td>
+
+      <td class="actions">
+        <i class="ri-pencil-fill" onclick = "editTransaction(${elem.id})"></i>
+        <i class="ri-delete-bin-fill" onclick = "dltTransaction(${elem.id})"></i>
+      </td>
+    `;
+
+    tBody.append(row);
+  });
+}
+
+function editTransaction(index) {
+  console.log(`Edit transaction clicked! of element ${index}`);
+  let currentTransaction = currentUser.transactions.find(
+    (elem) => elem.id === index,
+  );
+  console.log(currentTransaction);
+}
+function dltTransaction(index) {
+  let currentTransactionIndex = currentUser.transactions.findIndex(
+    (elem) => elem.id === index,
+  );
+
+  currentUser.transactions.splice(currentTransactionIndex, 1);
   saveUsers();
   renderUI();
 }
