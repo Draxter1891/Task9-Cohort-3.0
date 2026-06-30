@@ -77,6 +77,9 @@ const dashboard = document.querySelector("#dashboard")
 const settings = document.querySelector("#settings")
 const rightbtm = document.querySelector(".right-btm")
 const rightsettings = document.querySelector(".right-settings")
+const deleteTransactionsBtn = document.querySelector("#delete-all-transactions")
+
+
 
 //form data
 const type = document.querySelector("#type");
@@ -124,7 +127,7 @@ form.addEventListener("submit", (e) => {
     category: category.value,
   };
 
-  console.log(currentUser);
+  // console.log(currentUser);
   currentUser.transactions.push(transaction);
 
   saveUsers();
@@ -146,11 +149,14 @@ settings.addEventListener("click",()=>{
     dashboard.classList.remove("activeOption")
 })
 
+deleteTransactionsBtn.addEventListener("click",()=>{
+  deleteAllTransactions();
+})
 
 
 //Utility functions
 function renderUI() {
-  console.log("fetching user");
+  // console.log("fetching user");
   let loggedinUser = getUser();
 
   applyTheme(loggedinUser.darkMode);
@@ -185,8 +191,8 @@ function getTotals(user) {
   let totalExpense = 0,
     totalIncome = 0;
   //   let loggedinUser = users.find((user) => user.id === currentUser.id);
-  console.log(user);
-  console.log("Inside getTotal user");
+  // console.log(user);
+  // console.log("Inside getTotal user");
   let money = user.transactions;
   money.forEach((element) => {
     if (element.type === "expense") {
@@ -230,8 +236,15 @@ function saveUsers() {
 }
 function getUser() {
   let allUsers = JSON.parse(localStorage.getItem("users"));
-  let loggedinUser = allUsers.find((user) => user.id === currentUser.id);
+  let loggedinUser = allUsers.find((user) => user.id === currentUser.id) || currentUser;
   return loggedinUser;
 }
 
-console.log(getUser());
+function deleteAllTransactions(){
+  // console.log("delete transactions button clicked")
+  // console.log(currentUser)
+  currentUser.transactions = [];
+  saveUsers();
+  renderUI();
+}
+
