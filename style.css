@@ -371,6 +371,11 @@ main {
 }
 .right .right-btm .cards .card h2 {
   color: var(--primary-text);
+  display: flex;
+  gap: 0.2rem;
+}
+.right .right-btm .cards .card h2 span:nth-child(2) {
+  word-break: break-all;
 }
 .right .right-btm .cards .card:nth-child(2) i {
   background: #dcfce7;
@@ -641,13 +646,15 @@ main {
      -moz-user-select: none;
           user-select: none;
 }
-.right .right-btm .transactions table .amount.income {
+.right .right-btm .transactions table .income {
   color: #16a34a;
   font-weight: 600;
+  text-wrap-mode: nowrap;
 }
-.right .right-btm .transactions table .amount.expense {
+.right .right-btm .transactions table .expense {
   color: #dc2626;
   font-weight: 600;
+  text-wrap-mode: nowrap;
 }
 .right .right-btm .transactions table .actions {
   display: flex;
@@ -671,6 +678,12 @@ main {
 }
 .right .right-btm .transactions table .actions i:last-child:hover {
   color: #ef4444;
+}
+.right .right-btm .transactions .income {
+  color: #16a34a;
+}
+.right .right-btm .transactions .expense {
+  color: #e80000;
 }
 .right .right-settings {
   width: 100%;
