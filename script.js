@@ -60,6 +60,7 @@ let users = JSON.parse(localStorage.getItem("users")) || [
 const currentUser = users[0];
 
 let chart = null;
+let editIndex = null;
 
 //DOM elements
 const userName = document.querySelector("#user-name");
@@ -121,7 +122,7 @@ form.addEventListener("submit", (e) => {
     return;
   }
   const transaction = {
-    id: Date.now(),
+    id: editIndex ?? Date.now(), //This is nullish coalescing which states = "Use Date.now() only if editIndex is null or undefined."
     type: type.value,
     description: description.value,
     amount: Number(amount.value),
@@ -130,7 +131,13 @@ form.addEventListener("submit", (e) => {
   };
 
   // console.log(currentUser);
-  currentUser.transactions.push(transaction);
+  if (editIndex!==null) {
+    let transactionindex = currentUser.transactions.findIndex(elem=>elem.id===editIndex)
+    currentUser.transactions[transactionindex] = transaction;
+    editIndex = null;
+  } else {
+    currentUser.transactions.push(transaction);
+  }
 
   saveUsers();
   renderUI();
@@ -175,7 +182,6 @@ function renderUI() {
   currencyType.forEach(
     (elem) => (elem.textContent = currencySymbols[loggedinUser.currency]),
   );
-  // console.log(loggedinUser)
   renderChart(totals.income, totals.expense);
   renderTransactions();
 }
@@ -279,6 +285,8 @@ function deleteAllTransactions() {
 function renderTransactions() {
   console.log(currentUser);
   tBody.innerHTML = "";
+
+  let filteredArray = 
   currentUser.transactions.forEach((elem) => {
     const row = document.createElement("tr");
 
@@ -304,11 +312,18 @@ function renderTransactions() {
 }
 
 function editTransaction(index) {
-  console.log(`Edit transaction clicked! of element ${index}`);
+
   let currentTransaction = currentUser.transactions.find(
     (elem) => elem.id === index,
   );
-  console.log(currentTransaction);
+
+  editIndex = index;
+  formOverlay.style.display = "block";
+  type.value = currentTransaction.type;
+  description.value = currentTransaction.description;
+  amount.value = currentTransaction.amount;
+  date.value = currentTransaction.date;
+  category.value = currentTransaction.category;
 }
 function dltTransaction(index) {
   let currentTransactionIndex = currentUser.transactions.findIndex(
