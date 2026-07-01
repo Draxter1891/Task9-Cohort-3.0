@@ -89,7 +89,9 @@ const description = document.querySelector("#description");
 const amount = document.querySelector("#amount");
 const date = document.querySelector("#date");
 const category = document.querySelector("#category");
-
+const settingsForm = document.querySelector("#settings-form");
+const setUsername = document.querySelector("#settings-username")
+const setCurrency = document.querySelector("#settings-currency")
 //Event listeners
 
 darkMode.addEventListener("change", (e) => {
@@ -145,11 +147,22 @@ form.addEventListener("submit", (e) => {
   formOverlay.style.display = "none";
 });
 
+settingsForm.addEventListener("submit",(e)=>{
+  e.preventDefault();
+  console.log(setUsername.value,setCurrency.value)
+
+  currentUser.name = setUsername.value;
+  currentUser.currency = setCurrency.value;
+  saveUsers();
+  renderUI();
+})
+
 dashboard.addEventListener("click", () => {
   showPage("dashboard");
 });
 settings.addEventListener("click", () => {
   showPage("settings");
+  renderSettingsUI();
 });
 
 deleteTransactionsBtn.addEventListener("click", () => {
@@ -187,6 +200,12 @@ function renderUI() {
 }
 
 renderUI();
+
+function renderSettingsUI(){
+  setUsername.value = currentUser.name;
+  setCurrency.value = currentUser.currency;
+
+}
 
 function showPage(page) {
   if (page === "dashboard") {

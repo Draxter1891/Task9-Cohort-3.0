@@ -198,23 +198,27 @@
             <p>Manage your account profile and app formatting.</p>
           </div>
 
-          <form action="">
+          <form id="settings-form">
             <h2>Profile Details</h2>
-            <div class="name">
+            <div class="editables">
+
+            
+            <div class="edits">
               <label for="full-name">Full Name</label>
-              <input type="text" placeholder="Enter username..." />
+              <input type="text" placeholder="Enter username..." id="settings-username"/>
             </div>
-            <div class="currency">
+            <div class="edits">
               <label for="primary-currency">Primary Currency</label>
-              <select name="currency" id="currency">
+              <select name="currency" id="settings-currency">
                 <option value="USD">USD ($)</option>
                 <option value="EUR">EUR (€)</option>
                 <option value="GBP">GBP (£)</option>
                 <option value="INR">INR (₹)</option>
                 <option value="JPY">JPY (¥)</option>
               </select>
-              <input type="text" placeholder="Enter username..." />
             </div>
+            </div>
+            <button>Save</button>
           </form>
         </div>
       </section>

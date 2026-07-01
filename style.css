@@ -677,11 +677,69 @@ main {
   padding: 2rem;
   display: none;
 }
+.right .right-settings .heading {
+  margin-bottom: 2rem;
+}
 .right .right-settings .heading h1 {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   color: var(--primary-text);
+  margin-bottom: 0.5rem;
 }
 .right .right-settings .heading p {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: var(--text-color);
+}
+.right .right-settings form {
+  width: 70%;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background: var(--elements-bg);
+  border: 1px solid var(--border-color);
+  color: var(--primary-text);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.right .right-settings form h2 {
+  font-size: 1.4rem;
+}
+.right .right-settings form .editables {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+.right .right-settings form .editables .edits {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.right .right-settings form .editables .edits input {
+  background: var(--primary-bg);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  color: var(--primary-text);
+}
+.right .right-settings form .editables .edits select {
+  background: var(--primary-bg);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  color: var(--primary-text);
+}
+.right .right-settings form button {
+  padding: 0.5rem 2.5rem;
+  border: none;
+  border-radius: 0.3rem;
+  width: -moz-fit-content;
+  width: fit-content;
+  cursor: pointer;
+  outline: none;
+  background: var(--btn-bg);
+  color: var(--primary-text);
+}
+.right .right-settings form button:active {
+  filter: brightness(0.8);
 }/*# sourceMappingURL=style.css.map */

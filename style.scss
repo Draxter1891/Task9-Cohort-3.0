@@ -653,16 +653,16 @@ main {
                 i {
                   font-size: 1rem;
                   border-radius: 0.25rem;
-                  padding: .3rem;
-                  &:nth-child(2){
+                  padding: 0.3rem;
+                  &:nth-child(2) {
                     color: #991b1b;
                   }
                   &:hover:first-child {
-                  background-color: rgb(27, 71, 107);
-                }
-                &:hover:nth-child(2){
-                  background-color: rgb(160, 57, 57);
-                }
+                    background-color: rgb(27, 71, 107);
+                  }
+                  &:hover:nth-child(2) {
+                    background-color: rgb(160, 57, 57);
+                  }
                 }
               }
             }
@@ -737,13 +737,70 @@ main {
     padding: 2rem;
     display: none;
     .heading {
+      margin-bottom: 2rem;
       h1 {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
         color: var(--primary-text);
+        margin-bottom: .5rem;
       }
       p {
-        font-size: 0.8rem;
+        font-size: 0.9rem;
         color: var(--text-color);
+      }
+    }
+    form {
+      width: 70%;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      background: var(--elements-bg);
+      border: 1px solid var(--border-color);
+      color: var(--primary-text);
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+
+      h2{
+        font-size: 1.4rem;
+      }
+
+      .editables {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        .edits {
+          width: 45%;
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          input {
+            background: var(--primary-bg);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 0.3rem;
+            color: var(--primary-text);
+          }
+          select {
+            background: var(--primary-bg);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 0.3rem;
+            color: var(--primary-text);
+          }
+        }
+      }
+      button {
+        padding: 0.5rem 2.5rem;
+        border: none;
+        border-radius: 0.3rem;
+        width: fit-content;
+        cursor: pointer;
+        outline: none;
+        background: var(--btn-bg);
+        color: var(--primary-text);
+        &:active{
+          filter: brightness(0.8);
+        }
       }
     }
   }
