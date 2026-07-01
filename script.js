@@ -60,8 +60,8 @@ let users = JSON.parse(localStorage.getItem("users")) || [
 const currentUser = users[0];
 
 let chart = null;
-let editIndex = null;
-
+let editingID = null;
+let currentFilter = "all";
 //DOM elements
 const userName = document.querySelector("#user-name");
 const formOverlay = document.querySelector(".form-overlay");
@@ -79,10 +79,12 @@ const dashboard = document.querySelector("#dashboard");
 const settings = document.querySelector("#settings");
 const rightbtm = document.querySelector(".right-btm");
 const rightsettings = document.querySelector(".right-settings");
-const deleteTransactionsBtn = document.querySelector(
+const deleteAllTransactionsBtn = document.querySelector(
   "#delete-all-transactions",
 );
 const tBody = document.querySelector("#transactions-list");
+const transactionType = document.querySelector("#transaction-type");
+
 //form data
 const type = document.querySelector("#type");
 const description = document.querySelector("#description");
@@ -90,8 +92,8 @@ const amount = document.querySelector("#amount");
 const date = document.querySelector("#date");
 const category = document.querySelector("#category");
 const settingsForm = document.querySelector("#settings-form");
-const setUsername = document.querySelector("#settings-username")
-const setCurrency = document.querySelector("#settings-currency")
+const setUsername = document.querySelector("#settings-username");
+const setCurrency = document.querySelector("#settings-currency");
 //Event listeners
 
 darkMode.addEventListener("change", (e) => {
@@ -100,7 +102,6 @@ darkMode.addEventListener("change", (e) => {
   currentUser.darkMode = isDarkMode;
   applyTheme(isDarkMode);
   saveUsers();
-  // console.log(getUser());
 });
 
 addTransaction.addEventListener("click", () => {
@@ -124,7 +125,7 @@ form.addEventListener("submit", (e) => {
     return;
   }
   const transaction = {
-    id: editIndex ?? Date.now(), //This is nullish coalescing which states = "Use Date.now() only if editIndex is null or undefined."
+    id: editingID ?? Date.now(), //This is nullish coalescing which states = "Use Date.now() only if editingID is null or undefined."
     type: type.value,
     description: description.value,
     amount: Number(amount.value),
@@ -132,11 +133,12 @@ form.addEventListener("submit", (e) => {
     category: category.value,
   };
 
-  // console.log(currentUser);
-  if (editIndex!==null) {
-    let transactionindex = currentUser.transactions.findIndex(elem=>elem.id===editIndex)
+  if (editingID !== null) {
+    const transactionindex = currentUser.transactions.findIndex(
+      (elem) => elem.id === editingID,
+    );
     currentUser.transactions[transactionindex] = transaction;
-    editIndex = null;
+    editingID = null;
   } else {
     currentUser.transactions.push(transaction);
   }
@@ -147,15 +149,15 @@ form.addEventListener("submit", (e) => {
   formOverlay.style.display = "none";
 });
 
-settingsForm.addEventListener("submit",(e)=>{
+settingsForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  console.log(setUsername.value,setCurrency.value)
 
   currentUser.name = setUsername.value;
   currentUser.currency = setCurrency.value;
   saveUsers();
   renderUI();
-})
+  showPage("dashboard")
+});
 
 dashboard.addEventListener("click", () => {
   showPage("dashboard");
@@ -165,13 +167,26 @@ settings.addEventListener("click", () => {
   renderSettingsUI();
 });
 
-deleteTransactionsBtn.addEventListener("click", () => {
+deleteAllTransactionsBtn.addEventListener("click", () => {
   deleteAllTransactions();
+});
+
+transactionType.addEventListener("change", (e) => {
+  currentFilter = e.target.value;
+  if (e.target.value === "all") {
+    renderTransactions();
+    return;
+  }
+
+  const filteredTransactions = currentUser.transactions.filter(
+    (transaction) => transaction.type === e.target.value,
+  );
+
+  renderTransactions(filteredTransactions);
 });
 
 //Utility functions
 function renderUI() {
-  // console.log("fetching user");
   let loggedinUser = currentUser;
 
   applyTheme(loggedinUser.darkMode);
@@ -196,15 +211,14 @@ function renderUI() {
     (elem) => (elem.textContent = currencySymbols[loggedinUser.currency]),
   );
   renderChart(totals.income, totals.expense);
-  renderTransactions();
+  renderTransactions(getFilteredTransactions());
 }
 
 renderUI();
 
-function renderSettingsUI(){
+function renderSettingsUI() {
   setUsername.value = currentUser.name;
   setCurrency.value = currentUser.currency;
-
 }
 
 function showPage(page) {
@@ -232,11 +246,9 @@ function applyTheme(isDarkMode) {
 }
 
 function getTotals(user) {
-  let totalExpense = 0,
-    totalIncome = 0;
-  //   let loggedinUser = users.find((user) => user.id === currentUser.id);
-  // console.log(user);
-  // console.log("Inside getTotal user");
+  let totalExpense = 0;
+  let totalIncome = 0;
+
   let money = user.transactions;
   money.forEach((element) => {
     if (element.type === "expense") {
@@ -277,6 +289,15 @@ function renderChart(totalIncome, totalExpense) {
     },
     options: {
       responsive: true,
+      scales:{
+        y:{
+          ticks:{
+            callback:function(value){
+              return formatCurrency(value);
+            }
+          }
+        }
+      }
     },
   });
 }
@@ -292,8 +313,6 @@ function getUser() {
 }
 
 function deleteAllTransactions() {
-  // console.log("delete transactions button clicked")
-  // console.log(currentUser)
   if (confirm("Are you sure to delete all transactions?")) {
     currentUser.transactions = [];
   }
@@ -301,12 +320,10 @@ function deleteAllTransactions() {
   renderUI();
 }
 
-function renderTransactions() {
-  console.log(currentUser);
+function renderTransactions(transactionsdata) {
   tBody.innerHTML = "";
 
-  let filteredArray = 
-  currentUser.transactions.forEach((elem) => {
+  transactionsdata.forEach((elem) => {
     const row = document.createElement("tr");
 
     row.innerHTML = `
@@ -318,7 +335,7 @@ function renderTransactions() {
         <span class="category-tag">${elem.category}</span>
       </td>
 
-      <td class="income" style="color:${elem.type === "income" ? "#16A34A" : "#E80000"}">${elem.type === "income" ? "+" : "-"} ${elem.amount}</td>
+      <td class="${elem.type}">${elem.type === "income" ? "+" : "-"} <span>${getCurrencySymbol()}</span> ${elem.amount}</td>
 
       <td class="actions">
         <i class="ri-pencil-fill" onclick = "editTransaction(${elem.id})"></i>
@@ -330,13 +347,31 @@ function renderTransactions() {
   });
 }
 
-function editTransaction(index) {
+function getFilteredTransactions(){
 
+    switch(currentFilter){
+
+        case "income":
+            return currentUser.transactions.filter(trans=>trans.type==="income");
+
+        case "expense":
+            return currentUser.transactions.filter(trans=>trans.type==="expense");
+
+        default:
+            return currentUser.transactions;
+
+    }
+
+}
+
+function editTransaction(index) {
   let currentTransaction = currentUser.transactions.find(
     (elem) => elem.id === index,
   );
 
-  editIndex = index;
+  if (!currentTransaction) return;
+
+  editingID = index;
   formOverlay.style.display = "block";
   type.value = currentTransaction.type;
   description.value = currentTransaction.description;
@@ -352,4 +387,27 @@ function dltTransaction(index) {
   currentUser.transactions.splice(currentTransactionIndex, 1);
   saveUsers();
   renderUI();
+}
+
+function getCurrencySymbol(){
+  switch(currentUser.currency){
+    case "USD":
+      return "$";
+    case "INR":
+      return "₹";
+    case "EUR":
+      return "€";
+    case "GBP":
+      return "£";
+    case "JPY":
+      return "¥";
+    default:
+      return ""
+  }
+}
+function formatCurrency(value) {
+    return new Intl.NumberFormat("en", {
+        notation: "compact",
+        maximumFractionDigits: 2
+    }).format(value);
 }

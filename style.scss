@@ -390,6 +390,13 @@ main {
         }
         h2 {
           color: var(--primary-text);
+          display: flex;
+          gap: 0.2rem;
+          span {
+            &:nth-child(2) {
+              word-break:break-all;
+            }
+          }
         }
         &:nth-child(2) {
           i {
@@ -688,16 +695,16 @@ main {
           }
         }
 
-        .amount {
-          &.income {
-            color: #16a34a;
-            font-weight: 600;
-          }
+        .income {
+          color: #16a34a;
+          font-weight: 600;
+          text-wrap-mode: nowrap;
+        }
 
-          &.expense {
-            color: #dc2626;
-            font-weight: 600;
-          }
+        .expense {
+          color: #dc2626;
+          font-weight: 600;
+          text-wrap-mode: nowrap;
         }
 
         .actions {
@@ -729,6 +736,14 @@ main {
           }
         }
       }
+
+      .income {
+        color: #16a34a;
+      }
+
+      .expense {
+        color: #e80000;
+      }
     }
   }
 
@@ -741,7 +756,7 @@ main {
       h1 {
         font-size: 1.8rem;
         color: var(--primary-text);
-        margin-bottom: .5rem;
+        margin-bottom: 0.5rem;
       }
       p {
         font-size: 0.9rem;
@@ -759,7 +774,7 @@ main {
       flex-direction: column;
       gap: 2rem;
 
-      h2{
+      h2 {
         font-size: 1.4rem;
       }
 
@@ -798,7 +813,7 @@ main {
         outline: none;
         background: var(--btn-bg);
         color: var(--primary-text);
-        &:active{
+        &:active {
           filter: brightness(0.8);
         }
       }
